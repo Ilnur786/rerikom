@@ -12,8 +12,8 @@
     </form>
     <div><p>Отправленные сообщение:</p></div>
     <table>
-    {% for message_id, message_text, status in data%}
-        <tr><td>{{ message_id }}</td><td>{{ message_text }}</td><td>{{ status }}</td></tr>
+    {% for message_id, user_id, message_text, status in data%}
+        <tr><td>{{ message_id }}</td><td>{{ user_id }}</td><td>{{ message_text }}</td><td>{{ status }}</td></tr>
     {% endfor %}
     </table>
 </body>
