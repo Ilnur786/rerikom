@@ -7,18 +7,8 @@ from jwt_token import get_token
 import os
 import configparser
 app = Flask(__name__)
+import time
 
-
-
-# with serializer function inside
-# def serializer(message):
-#     return json.dumps(message).encode('utf-8')
-#
-#
-# producer = KafkaProducer(
-#     bootstrap_servers=['localhost:9092'],
-#     value_serializer=serializer
-# )
 
 config_path = 'config.ini'
 token = get_token(config_path)
@@ -40,7 +30,7 @@ def get_db():
     """ Возвращает объект соединения с БД"""
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = Database.create()
+        db = g._database = Database()
     return db
 
 
@@ -51,9 +41,10 @@ def message_handler():
         text = request.form['message_text']
         user_id = str(uuid4())
         message_id = db.save_message(user_id, text)
-        data = {"message_id": message_id, "message_text": text}
+        data = {"message_id": message_id}
         producer.send('sample', json.dumps(data).encode('utf-8'))
         producer.flush()
+        time.sleep(0.1)
         return render_template('index.html', data=db.get_entries())
     else:
         return render_template('index.html', data=db.get_entries())
@@ -67,7 +58,7 @@ def message():
         user_id = data['user_id']
         db = get_db()
         message_id = db.save_message(user_id, message_text)
-        data = {"message_id": message_id, "message_text": message_text}
+        data = {"message_id": message_id}
         producer.send('sample', json.dumps(data).encode('utf-8'))
         producer.flush()
         return jsonify(data)
