@@ -56,11 +56,3 @@ def decode_jwt(encoded, config_path='config.ini'):
 		jwt_token = False
 	return jwt_token
 
-
-if __name__ == '__main__':
-	user = 121247482
-	text = 'sdhnfjkewfewf'
-	with open('test.txt', 'a+', ) as f:
-		f.seek(0)
-		print(f.read())
-		f.write('\ntoken')
