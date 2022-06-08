@@ -1,20 +1,19 @@
-from flask import Flask, request, session, g, render_template, jsonify
-from db_sqlite import Database
+from flask import Flask, request, g, render_template, jsonify
 from kafka import KafkaProducer
 import json
 from uuid import uuid4
-from jwt_token import get_token
-import os
+from all_neccessary_files.jwt_token import get_token
+from all_neccessary_files.database.db_sqlite import Database
 import configparser
-app = Flask(__name__)
 import time
 
+app = Flask(__name__)
 
-config_path = 'config.ini'
+
+config_path = '../config.ini'
 token = get_token(config_path)
 config = configparser.ConfigParser()
 config.read(config_path)
-# db_name = config['DATABASE']['db_name']
 
 
 def serializer(message):
@@ -27,7 +26,6 @@ producer = KafkaProducer(
 
 
 def get_db():
-    """ Возвращает объект соединения с БД"""
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = Database()
