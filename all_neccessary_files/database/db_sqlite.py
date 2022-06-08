@@ -1,8 +1,6 @@
 import sqlite3
 
 
-# название дб можно написать в конфиг, а от туда загружать его в переменные среды
-
 class Database(object):
 	_instance = None
 
