@@ -1,8 +1,8 @@
 import json
 from kafka import KafkaConsumer
 import requests as req
-from jwt_token import get_token
-from db_sqlite import Database
+from all_neccessary_files.jwt_token import get_token
+from all_neccessary_files.database.db_sqlite import Database
 
 token = get_token()
 db = Database()
@@ -23,7 +23,6 @@ def send_status(message_id, status):
     header = {"Authorization": token, "Content-type": "application/json"}
     url = 'http://127.0.0.1:5555/api/v1/message_confirmation'
     req.post(url=url, data=json.dumps(payload), headers=header)
-
 
 
 if __name__ == '__main__':
